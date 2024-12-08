@@ -1,0 +1,2 @@
+export LANGCHAIN_API_KEY="your-api-key"
+export APP_PORT=8080
