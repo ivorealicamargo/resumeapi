@@ -1,11 +1,14 @@
 import base64
 from fastapi.testclient import TestClient
 from resumeapi.server import app
+import pytest
+
 
 # Initialize the FastAPI test client
 client = TestClient(app)
 
 
+@pytest.mark.skip(reason="Test requires OPENAI_API_KEY, skipping in CI.")
 def test_process_resume_valid():
     """
     Test the /process/invoke endpoint with a valid base64-encoded file.
