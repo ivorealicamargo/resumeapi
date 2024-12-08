@@ -78,6 +78,20 @@ For those who want to get started immediately, follow these steps:
     ```
 
 
+### Running and Testing the Application
+Once the application is running (locally or via Docker), open your browser and navigate to:
+http://localhost:8080/process/playground/
+
+
+-  **Testing with a Sample Resume**:
+    - The project includes a sample resume file located at `tests/sample-resume.pdf`.
+    - Upload this file through the interface and click **Start** to test the resume parsing functionality.
+
+- **Viewing Results**:
+    - The parsed resume data, including fields such as candidate name, professional introduction, skills, and confidence scores, will appear in the output section.
+
+Ensure your environment variables are correctly set (e.g., `LANGCHAIN_API_KEY`) before running the application. The `sample-resume.pdf` provides a reliable test file to verify the app's capabilities.
+
 ---
 
 ## Getting Started
@@ -170,6 +184,7 @@ Use the `dockerize` functionality to manage the Dockerized deployment.
     ```
 
 ---
+
 
 ### Testing
 
