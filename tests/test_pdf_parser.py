@@ -18,12 +18,10 @@ def test_pdf_parser_with_valid_pdf():
         valid_pdf_content = pdf_file.read()
     parsed_text = PDFParser.parse(valid_pdf_content)
 
-    # Use actual extracted text to define expected assertions
     assert parsed_text.strip() != "", "PDF parser should extract text from valid PDFs"
     assert (
         "John Hui" in parsed_text
     ), "PDF parser should correctly extract the candidate's name"
-    # Adjust based on the actual extracted content
     assert (
         "real-time reactive computing" in parsed_text
     ), "PDF parser should extract relevant professional intro"
