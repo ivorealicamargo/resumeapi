@@ -1,8 +1,6 @@
-import os
 from unittest import mock
+import os
 import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from resumeapi.dockerize import (
     load_env_vars,
     build_and_run,
@@ -11,12 +9,16 @@ from resumeapi.dockerize import (
     main,
 )
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 
 @mock.patch("resumeapi.dockerize.subprocess.run")
 @mock.patch("resumeapi.dockerize.os.path.exists", return_value=True)
 def test_load_env_vars(mock_exists, mock_run):
     """Test loading environment variables from a .envrc file."""
-    with mock.patch("builtins.open", mock.mock_open(read_data='export TEST_KEY="value"\n')):
+    with mock.patch(
+        "builtins.open", mock.mock_open(read_data='export TEST_KEY="value"\n')
+    ):
         env_vars = load_env_vars()
     assert env_vars == {"TEST_KEY": "value"}
 
@@ -25,7 +27,7 @@ def test_load_env_vars(mock_exists, mock_run):
 @mock.patch("resumeapi.dockerize.load_env_vars", return_value={"TEST_KEY": "value"})
 def test_build_and_run(mock_load_env_vars, mock_run):
     """Test building and running the Docker container."""
-    build_and_run("test_image", "test_container", "8080", "/local/dir", "/container/dir")
+    build_and_run("test_image", "test_container", "8080")
     assert mock_run.call_count == 3  # build, stop, and run
 
 
@@ -47,7 +49,9 @@ def test_kill_container(mock_run):
 @mock.patch("resumeapi.dockerize.destroy_all")
 @mock.patch("resumeapi.dockerize.kill_container")
 @mock.patch("resumeapi.dockerize.argparse.ArgumentParser.parse_args")
-def test_main(mock_parse_args, mock_kill_container, mock_destroy_all, mock_build_and_run):
+def test_main(
+    mock_parse_args, mock_kill_container, mock_destroy_all, mock_build_and_run
+):
     """Test the main function with different CLI arguments."""
     # Test --destroy-all
     mock_parse_args.return_value = mock.Mock(destroy_all=True, kill_container=False)
