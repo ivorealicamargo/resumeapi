@@ -28,21 +28,21 @@ def test_load_env_vars(mock_exists, mock_run):
 def test_build_and_run(mock_load_env_vars, mock_run):
     """Test building and running the Docker container."""
     build_and_run("test_image", "test_container", "8080")
-    assert mock_run.call_count == 3  # build, stop, and run
+    assert mock_run.call_count == 3
 
 
 @mock.patch("resumeapi.dockerize.subprocess.run")
 def test_destroy_all(mock_run):
     """Test destroying all Docker resources."""
     destroy_all("test_image", "test_container")
-    assert mock_run.call_count == 2  # rm and rmi commands
+    assert mock_run.call_count == 2
 
 
 @mock.patch("resumeapi.dockerize.subprocess.run")
 def test_kill_container(mock_run):
     """Test stopping and removing a Docker container."""
     kill_container("test_container")
-    assert mock_run.call_count == 1  # rm command
+    assert mock_run.call_count == 1
 
 
 @mock.patch("resumeapi.dockerize.build_and_run")
@@ -53,21 +53,18 @@ def test_main(
     mock_parse_args, mock_kill_container, mock_destroy_all, mock_build_and_run
 ):
     """Test the main function with different CLI arguments."""
-    # Test --destroy-all
     mock_parse_args.return_value = mock.Mock(destroy_all=True, kill_container=False)
     main()
     mock_destroy_all.assert_called_once()
     mock_kill_container.assert_not_called()
     mock_build_and_run.assert_not_called()
 
-    # Test --kill-container
     mock_parse_args.return_value = mock.Mock(destroy_all=False, kill_container=True)
     main()
     mock_kill_container.assert_called_once()
-    mock_destroy_all.assert_called_once()  # Confirm it was called only in the previous case
+    mock_destroy_all.assert_called_once()
     mock_build_and_run.assert_not_called()
 
-    # Test default (build_and_run)
     mock_parse_args.return_value = mock.Mock(destroy_all=False, kill_container=False)
     main()
     mock_build_and_run.assert_called_once()

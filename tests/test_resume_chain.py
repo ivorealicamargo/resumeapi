@@ -23,7 +23,7 @@ def test_resume_output_parser_complete_input():
     expected_output = {
         "candidate_name": "Ivo Reali Camargo",
         "professional_intro": "I am a seasoned IT professional...",
-        "skills": ["[Python", "Docker", "Kubernetes"],  # Match current parser output
+        "skills": ["[Python", "Docker", "Kubernetes"],
     }
     assert parser.parse(input_text) == expected_output
 
@@ -38,6 +38,6 @@ def test_resume_output_parser_missing_fields():
     expected_output = {
         "candidate_name": "Ivo",
         "professional_intro": "I am a seasoned IT professional...",
-        "skills": [""],  # Match current parser output
+        "skills": [""],
     }
     assert parser.parse(input_text) == expected_output
