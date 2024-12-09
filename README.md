@@ -10,7 +10,7 @@
 
 1. **Resume Parsing**:
    - Extracts key fields such as candidate name, professional introduction, and skills from uploaded resumes.
-   - Supports PDF file format ONLY.
+   - Currently supports PDF file format only.
 
 2. **Confidence Evaluation**:
    - Provides a heuristic-based confidence score for the extracted resume fields.
@@ -24,40 +24,44 @@
    - Coverage includes:
      - Resume parsing logic.
      - Confidence evaluation scoring.
-     - PDF parsing.
+     - PDF file handling.
      - Dockerize script for deployment automation.
 
 5. **Dockerized Deployment**:
-   - Simplifies containerized deployment for consistent environments.
-   - Manages Docker containers and images using the `dockerize` utility.
+   - Simplifies containerized deployment with consistent environments using the dockerize utility.
 
 ---
 
 ## Quick Start
 
-For those who want to get started immediately, follow these steps:
+#### Prerequisites
 
-1. Ensure you have the prerequisites installed:
+Ensure you have the prerequisites installed:
    - Python 3.10 or higher.
    - [Poetry](https://python-poetry.org/docs/) for dependency management.
    - [Direnv](https://direnv.net/) to manage environment variables.
    - Docker for containerized deployment.
 
-2. Clone the repository and navigate to the project directory:
+#### Steps to Run
+
+1. Clone the repository and navigate to the project directory:
     ```bash
     git clone https://github.com/ivorealicamargo/resumeapi.git
     cd resumeapi
     ```
 
-3. Set up the environment variables:
+2. Set up the environment variables:
     - Create a `.envrc` file in the project root with the following content (see .envrc-example):
       ```bash
       export LANGCHAIN_API_KEY="your-api-key"  # Replace 'your-api-key' with your actual key
       export APP_PORT=8080
       ```
-    - Run `direnv allow` to load the environment variables.
+    - Load variables using:
+      ```bash
+      direnv allow
+      ```
 
-4. Install dependencies using Poetry:
+3. Install dependencies using Poetry:
     ```bash
     poetry install
     ```
@@ -67,64 +71,36 @@ For those who want to get started immediately, follow these steps:
     poetry run dockerize
     ```
 
-6. Access the LangServe playground at:
+6. Access the LangServe playground in your browser at:
     ```bash
     http://localhost:8080/process/playground/
     ```
 
-7. Stop and remove resources when finished:
+7. Clean Up Resources
+- Stop and remove container:
     ```bash
     poetry run dockerize --destroy-all
     ```
+---
 
+## Usage
 
-### Running and Testing the Application
-Once the application is running (locally or via Docker), open your browser and navigate to:
-http://localhost:8080/process/playground/
+1. Upload a Resume:
+- Use the interface to upload a PDF file (e.g., tests/sample-resume.pdf).
 
-
--  **Testing with a Sample Resume**:
-    - The project includes a sample resume file located at `tests/sample-resume.pdf`.
-    - Upload this file through the interface and click **Start** to test the resume parsing functionality.
-
-- **Viewing Results**:
-    - The parsed resume data, including fields such as candidate name, professional introduction, skills, and confidence scores, will appear in the output section.
-
-Ensure your environment variables are correctly set (e.g., `LANGCHAIN_API_KEY`) before running the application. The `sample-resume.pdf` provides a reliable test file to verify the app's capabilities.
+2. View Results:
+- The application parses fields like candidate name, professional introduction, and skills.
+- Confidence scores will also be displayed in the output.
 
 ---
 
-## Getting Started
 
-### Prerequisites
 
-- Python 3.10 or higher.
-- Poetry for dependency management.
-- Docker installed for containerized deployment.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ivorealicamargo/resumeapi.git
-   cd resumeapi
-   ```
-
-2. Install dependencies using Poetry:
-   ```bash
-    poetry install
-   ```
-
-3. Ensure environment variables are set:
-- Use a `.envrc`file with the following format:
-    ```bash
-    export LANGCHAIN_API_KEY="your-api-key" # Replace 'your-api-key' with your actual key
-    export APP_PORT=8080
-    ```
-- Run direnv allow in the project's directory to load the environment variables.
+## Other Topics
 
 ### Running Locally
 
+You can also run your application without using Docker locally by
 - Start the application locally:
     ```bash
     poetry run resumeapi
@@ -134,90 +110,38 @@ Ensure your environment variables are correctly set (e.g., `LANGCHAIN_API_KEY`) 
     - Navigate to http://localhost:8080/process/playground/ in your browser.
 
 
-### Code Quality and Pre-commit Hooks
-
-This project uses [pre-commit](https://pre-commit.com/) to ensure code quality and enforce consistent formatting before commits. The hooks include checks for:
-
-- Code formatting with `black`
-- Code style issues with `flake8`
-- Type safety validation with `mypy`
-
-#### Running Pre-commit Hooks Manually
-
-Before pushing your changes, ensure your code passes all pre-commit checks by running:
-
-```bash
-poetry run pre-commit run --all-files
-```
-
-#### Continuous Integration
-
-Pre-commit checks are also part of the CI pipeline. Code that doesn’t pass these checks will fail the CI tests and cannot be merged. Make sure to resolve any issues locally before pushing your changes.
-
-### Dockerized Deployment
-
-#### Building and Running with Docker
-Use the `dockerize` functionality to manage the Dockerized deployment.
-
-1. Run the application in Docker:
-    ```bash
-    poetry run dockerize
-    ```
-
-2. Access the application:
-
-    - Open the following link in your browser:
-    ```bash
-    http://localhost:8080/process/playground/
-    ```
-
-#### Additional Commands
-
-- Stop and remove the Docker container:
-    ```bash
-    poetry run dockerize --kill-container
-    ```
-
- - Remove both the Docker container and image:
-    ```bash
-    poetry run dockerize --destroy-all
-    ```
-
----
-
-
 ### Testing
 
- - Run the tests with:
+- Run the test suite:
     ```bash
     poetry run pytest --cov=resumeapi
     ```
-#### Coverage report:
- - Generate a coverage report:
+- Generate a coverage report:
     ```bash
     poetry run pytest --cov=resumeapi --cov-report=html
     ```
-    View the report in htmlcov/index.html.
-
-
-### Troubleshooting
-
-1. Port Already in Use:
-- Ensure port 8080 is free, or modify the APP_PORT variable in .envrc.
-
-2. Docker Issues:
-- If Docker fails to start the application, ensure Docker Desktop is running and accessible.
-
-3. Pre-commit Hooks Not Installed:
-- Install pre-commit hooks:
-    ```bash
-        poetry run pre-commit install
-    ```
- ---
-
- ## References
-
-- [LangServe Documentation](https://python.langchain.com/docs/langserve/)
-- [LangChain Documentation](https://langchain.com/docs)
+View the report in htmlcov/index.html.
 
 ---
+
+### Considerations
+
+#### Assumptions
+ - **Confidence Score:** The confidence score implementation is heuristic-based for demonstration purposes. A more refined scoring methodology should be developed to enhance accuracy.
+
+ #### Additional Features with More Time
+ - If given more time, the following enhancements would be prioritized:
+ 1. **Tracing and Logging:** Implementing robust tracing and logging throughout the system for easier debugging and monitoring.
+ 2. **Advanced Parsing:** Integrating libraries like Marker or Docling for improved parsing accuracy and flexibility in file formats.
+
+  #### Ideas for Future Development
+  1. **Multi-Format Support:**
+  - Extend parsing capabilities to handle additional formats like .docx and .txt.
+  2. **Agentic Workflow:**
+  - Develop a LangGraph-based agentic workflow to dynamically manage and optimize parsing, scoring, and error handling.
+  3. **LangGraph Transition:**
+  - Although LangServe was used for this project, future development should consider migrating to the [LangGraph Platform](https://github.com/langchain-ai/langserve/tree/main/MIGRATION.md) as recommended by the LangChain team for new projects.
+
+### References
+- [LangServe Documentation](https://python.langchain.com/docs/langserve/)
+- [LangChain Documentation](https://python.langchain.com/docs/introduction/)
