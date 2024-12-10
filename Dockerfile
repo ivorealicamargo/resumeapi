@@ -12,6 +12,5 @@ RUN poetry install --no-root --only main
 
 COPY . .
 
-EXPOSE 8080
 
-CMD ["poetry", "run", "resumeapi"]
+CMD ["sh", "-c", "poetry run resumeapi --port ${APP_PORT}"]

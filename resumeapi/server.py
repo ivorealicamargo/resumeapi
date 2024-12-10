@@ -8,6 +8,7 @@ from pydantic import Field
 from langchain_core.runnables import RunnableLambda
 from typing import Dict
 import uvicorn
+import os
 
 app = FastAPI(
     title="LangChain Resume Parser",
@@ -70,7 +71,8 @@ def main():
     """
     Entrypoint for running the FastAPI app using Uvicorn.
     """
-    uvicorn.run("resumeapi.server:app", host="0.0.0.0", port=8080)
+    port = int(os.getenv("APP_PORT"))
+    uvicorn.run("resumeapi.server:app", host="0.0.0.0", port=port)
 
 
 if __name__ == "__main__":
